@@ -1,4 +1,4 @@
-# OCR-Invoice-validation-Gofloaters-
+# Invoice Validator with GST Statutory Compliance Engine
 Rule-based invoice parser using Docling + RapidOCR. Extracts operator, GoFloaters, invoice and tax fields from PDF/DOCX/JPEG/PNG invoices, with evidence for each field, and validates GST rules. No LLM.
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
