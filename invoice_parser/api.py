@@ -553,8 +553,7 @@ if __name__ == "__main__":
     print(f"[FastAPI] Web UI: http://localhost:{settings.port}/ui/")
     print(f"[FastAPI] Swagger Docs: http://localhost:{settings.port}/docs")
     print(f"[FastAPI] Rate Limiting: {settings.rate_limit_max} req / {settings.rate_limit_window_s}s")
-    print(f"[FastAPI] Execution Timeout: {settings.execution_timeout_ms / 1000}s")
-    print(f"[FastAPI] Auth Required: {bool(settings.api_keys)}\n")
+    print(f"[FastAPI] Execution Timeout: {settings.execution_timeout_ms / 1000}s\n")
 
     uvicorn.run(
         "invoice_parser.api:app",

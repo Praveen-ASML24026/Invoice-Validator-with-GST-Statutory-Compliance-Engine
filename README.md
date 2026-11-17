@@ -3,10 +3,9 @@ Rule-based invoice parser using Docling + RapidOCR. Extracts operator, GoFloater
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.141.1-009688.svg)](https://fastapi.tiangolo.com/)
-[![Docling](https://img.shields.io/badge/Docling-Layout%20Analysis-orange.svg)](https://github.com/DS4SD/docling)
-[![RapidOCR](https://img.shields.io/badge/RapidOCR-ONNX%20Runtime-red.svg)](https://github.com/RapidAI/RapidOCR)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Praveen-ASML24026/Invoice-Validator-with-GST-Statutory-Compliance-Engine)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Praveen-ASML24026/Invoice-Validator-with-GST-Statutory-Compliance-Engine)
 
 ---
 
@@ -195,30 +194,26 @@ The service will start at `http://localhost:8000`:
 
 ## 🚀 GitHub & Cloud Deployment
 
-This project includes automated deployment configurations for both **GitHub Native Services** and **Cloud Platforms**:
+This project includes zero-configuration deployment setups:
 
-### 1. GitHub Pages (Web UI Demo)
-The static web dashboard is automatically deployed to **GitHub Pages** via `.github/workflows/pages.yml`.
-- **Live URL**: `https://praveen-asml24026.github.io/Invoice-Validator-with-GST-Statutory-Compliance-Engine/`
-- **Features**: Features an integrated **Connection & API Settings** panel allowing you to connect the frontend to any live backend URL (e.g., your local server `http://localhost:8000` or a deployed cloud instance) with optional API Key support.
-- **Enable on GitHub**: Go to **Settings** → **Pages** → Source: **GitHub Actions**.
+### 1. GitHub Codespaces (Run Directly in GitHub Cloud)
+Click the badge below to run the complete FastAPI application and Web UI in a browser cloud environment hosted by GitHub:
 
-### 2. GitHub Packages (GHCR - GitHub Container Registry)
-Every push to `main` triggers `.github/workflows/docker-publish.yml`, building and deploying the production Docker container directly to GitHub's Container Registry.
-- **Pull & Run anywhere instantly from GitHub**:
-  ```bash
-  docker run -d -p 8000:8000 ghcr.io/praveen-asml24026/invoice-validator-with-gst-statutory-compliance-engine:latest
-  ```
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Praveen-ASML24026/Invoice-Validator-with-GST-Statutory-Compliance-Engine)
 
-### 3. One-Click Cloud Deployment (Render / Coolify / Railway)
-For running the 24/7 Python + Docling backend with free SSL and public HTTPS endpoints:
+- Auto-provisions the container and system dependencies.
+- Forwards port 8000 and automatically opens the Web UI.
 
-- **Render Blueprint (`render.yaml`)**:
-  1. Sign in to [Render](https://render.com) with GitHub.
-  2. Click **New** → **Blueprint** and connect this repository.
-  3. Render automatically reads `render.yaml` and provisions your containerized FastAPI service.
-- **Coolify / Self-Hosted VPS**:
-  - Automatically configured via `nixpacks.toml` and `Dockerfile`.
+### 2. GitHub Packages (GHCR - Pre-built Container)
+The container is automatically built and deployed to GitHub Container Registry on every push:
+```bash
+docker run -d -p 8000:8000 ghcr.io/praveen-asml24026/invoice-validator-with-gst-statutory-compliance-engine:latest
+```
+
+### 3. One-Click Cloud Deployment (Render)
+To run a persistent 24/7 web application with free SSL:
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Praveen-ASML24026/Invoice-Validator-with-GST-Statutory-Compliance-Engine)
 
 ---
 

@@ -19,7 +19,7 @@ class Settings:
     )
     auth_required: bool = field(
         default_factory=lambda: (
-            os.getenv("AUTH_REQUIRED", "true").lower() in ("true", "1", "yes")
+            os.getenv("AUTH_REQUIRED", "false").lower() in ("true", "1", "yes")
         )
     )
     trust_proxy: bool = field(
