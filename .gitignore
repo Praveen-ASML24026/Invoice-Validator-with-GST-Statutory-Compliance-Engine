@@ -41,7 +41,7 @@ tmp/
 .cursorrules
 .clinerules
 .windsurfrules
-.github/
+# .github/ workflows must be tracked for GitHub Actions and deployments
 .headroom/
 AGENTS.md
 CLAUDE.md

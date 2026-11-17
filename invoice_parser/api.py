@@ -35,6 +35,7 @@ from typing import Optional
 
 from fastapi import Depends, FastAPI, File, Header, HTTPException, Request, Response, Security, UploadFile
 from fastapi.concurrency import run_in_threadpool
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.security import APIKeyHeader, HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.staticfiles import StaticFiles
@@ -80,6 +81,15 @@ app = FastAPI(
     version="2.0.0",
     description="Production-grade invoice parsing and GST compliance extraction with Docling & RapidOCR.",
     lifespan=lifespan,
+)
+
+# Enable CORS for cross-domain Web UI, GitHub Pages, and cloud clients
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

@@ -193,6 +193,35 @@ The service will start at `http://localhost:8000`:
 
 ---
 
+## 🚀 GitHub & Cloud Deployment
+
+This project includes automated deployment configurations for both **GitHub Native Services** and **Cloud Platforms**:
+
+### 1. GitHub Pages (Web UI Demo)
+The static web dashboard is automatically deployed to **GitHub Pages** via `.github/workflows/pages.yml`.
+- **Live URL**: `https://praveen-asml24026.github.io/OCR---INvoice-validation-Gofloaters-/`
+- **Features**: Features an integrated **Connection & API Settings** panel allowing you to connect the frontend to any live backend URL (e.g., your local server `http://localhost:8000` or a deployed cloud instance) with optional API Key support.
+- **Enable on GitHub**: Go to **Settings** → **Pages** → Source: **GitHub Actions**.
+
+### 2. GitHub Packages (GHCR - GitHub Container Registry)
+Every push to `main` triggers `.github/workflows/docker-publish.yml`, building and deploying the production Docker container directly to GitHub's Container Registry.
+- **Pull & Run anywhere instantly from GitHub**:
+  ```bash
+  docker run -d -p 8000:8000 ghcr.io/praveen-asml24026/ocr---invoice-validation-gofloaters-:latest
+  ```
+
+### 3. One-Click Cloud Deployment (Render / Coolify / Railway)
+For running the 24/7 Python + Docling backend with free SSL and public HTTPS endpoints:
+
+- **Render Blueprint (`render.yaml`)**:
+  1. Sign in to [Render](https://render.com) with GitHub.
+  2. Click **New** → **Blueprint** and connect this repository.
+  3. Render automatically reads `render.yaml` and provisions your containerized FastAPI service.
+- **Coolify / Self-Hosted VPS**:
+  - Automatically configured via `nixpacks.toml` and `Dockerfile`.
+
+---
+
 ## 🐳 Docker Deployment
 
 The repository includes a production-ready, security-hardened `Dockerfile` with multi-stage layer caching and pre-warmed model runtimes:
@@ -296,3 +325,4 @@ Comprehensive guides are available in the repository:
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 Developed for **GoFloaters** by **Praveen RS**.
+

@@ -1,0 +1,23 @@
+# ==============================================================================
+# Render Blueprint Specification for GoFloaters Invoice Parser
+# Connects directly to GitHub for automated zero-config container deployments
+# ==============================================================================
+
+services:
+  - type: web
+    name: gofloaters-invoice-validator
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: EXECUTION_TIMEOUT_MS
+        value: 120000
+      - key: RATE_LIMIT_MAX
+        value: 60
+      - key: RATE_LIMIT_WINDOW_S
+        value: 60
