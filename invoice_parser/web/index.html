@@ -93,24 +93,6 @@ pre{margin:0;padding:14px 16px;overflow:auto;max-height:420px;font:12.5px/1.5 "I
   <span class="meta" id="health">Checking API...</span>
 </header>
 
-<details class="card" style="margin-bottom:16px" id="settingsBox">
-  <summary>Connection & API Settings</summary>
-  <div class="settings">
-    <label>
-      API Backend Base URL (leave blank if running on the same server, or enter e.g. <code>http://localhost:8000</code> or your deployed cloud URL)
-      <input type="text" id="apiEndpoint" placeholder="e.g. http://localhost:8000 or https://your-app.onrender.com">
-    </label>
-    <label>
-      API Key / Bearer Token (optional, if server authentication is enabled)
-      <input type="password" id="apiKey" placeholder="Leave empty for open access">
-    </label>
-    <div style="display:flex;gap:8px;margin-top:4px">
-      <button class="btn" id="saveSettings" type="button">Save Settings</button>
-      <button class="btn" id="testConn" type="button">Test Connection</button>
-    </div>
-  </div>
-</details>
-
 <div class="grid top">
   <div id="drop" tabindex="0" role="button" aria-label="Choose an invoice file">
     <b>Drop an invoice here, or click to choose</b>
@@ -160,62 +142,36 @@ const RULES=[["REQ1","State consistency","Each party's address state agrees with
   ["REQ4","GSTIN present","Operator and GoFloaters GSTINs are on the invoice."]];
 let last=null, previewUrl=null, cur=null;
 
-const apiInput = $("apiEndpoint"), keyInput = $("apiKey");
-if (apiInput) apiInput.value = localStorage.getItem("gf_api_base") || "";
-if (keyInput) keyInput.value = localStorage.getItem("gf_api_key") || "";
-
-const getApiBase = () => {
-  const v = (apiInput ? apiInput.value : "") || localStorage.getItem("gf_api_base") || "";
-  return v.trim().replace(/\/+$/, "");
-};
-
-const api = p => {
-  const base = getApiBase();
-  return base ? `${base}${p}` : p;
-};
-
-const getHeaders = () => {
-  const h = {};
-  const k = (keyInput ? keyInput.value : "") || localStorage.getItem("gf_api_key") || "";
-  if (k.trim()) h["X-API-Key"] = k.trim();
-  return h;
-};
+// Default API connection (same host as current page for FastAPI / Docker / Cloud)
+const api = p => p;
 
 function health(){
-  $("health").textContent = "Checking API...";
-  fetch(api("/health"), { headers: getHeaders() })
+  fetch(api("/health"))
     .then(r => {
       if (r.ok) {
         $("health").textContent = "API connected";
         $("health").style.color = "var(--teal)";
       } else {
-        $("health").textContent = "API error (" + r.status + ")";
-        $("health").style.color = "var(--amber)";
+        if (window.location.hostname.includes("github.io")) {
+          $("health").textContent = "Frontend demo only (Backend required)";
+          $("health").style.color = "var(--amber)";
+        } else {
+          $("health").textContent = "API error (" + r.status + ")";
+          $("health").style.color = "var(--amber)";
+        }
       }
     })
     .catch(() => {
-      $("health").textContent = "API not reachable";
-      $("health").style.color = "var(--red)";
-      if (window.location.hostname.includes("github.io") && !getApiBase()) {
-        const sb = $("settingsBox");
-        if (sb) sb.open = true;
+      if (window.location.hostname.includes("github.io")) {
+        $("health").textContent = "Frontend demo only (Backend required)";
+        $("health").style.color = "var(--amber)";
+      } else {
+        $("health").textContent = "API not reachable";
+        $("health").style.color = "var(--red)";
       }
     });
 }
 health();
-
-if ($("saveSettings")) {
-  $("saveSettings").onclick = () => {
-    if (apiInput) localStorage.setItem("gf_api_base", apiInput.value.trim());
-    if (keyInput) localStorage.setItem("gf_api_key", keyInput.value.trim());
-    health();
-  };
-}
-if ($("testConn")) {
-  $("testConn").onclick = () => {
-    health();
-  };
-}
 function renderRegs(hit){
   $("regs").innerHTML=REGS.map(([c,g])=>`<div class="reg${g===hit?" hit":""}"><span>${c}${g===hit?" (bill-to matches)":""}</span><code>${g}</code></div>`).join("");
 }
@@ -235,20 +191,26 @@ async function run(file){
   $("err").style.display="none";$("results").style.display="none";
   $("busy").style.display="block";$("busy").textContent="Reading "+file.name+". Scanned files can take up to two minutes.";
   const fd=new FormData();fd.append("file",file);
-  const headers = getHeaders();
+  const headers={};
 
   try{
     const r=await fetch(api("/v1/extract"),{method:"POST",headers,body:fd});
     const j=await r.json().catch(()=>({}));
     if(!r.ok){
-      const why=r.status===401?"Unauthorized. Invalid or missing API key. Please check the API Key field above.":
+      const why=r.status===401?"Unauthorized. Invalid or missing API key.":
         r.status===408?(j.detail||"Invoice processing timed out after 120 seconds."):
         r.status===413?"The file is too large for this server.":
         r.status===415?"This file type is not supported.":(j.message||j.detail||"The server could not process this file.");
       showError(why+(j.request_id?" (request "+j.request_id+")":""));return;
     }
     last=j;render(j,file);
-  }catch(e){showError("Cannot reach the API. Check that the server is running.")}
+  }catch(e){
+    if(window.location.hostname.includes("github.io")){
+      showError("GitHub Pages hosts the frontend demo only. To parse live invoices, run the server locally on port 8000 or deploy the Docker container.");
+    } else {
+      showError("Cannot reach the API. Check that the server is running.");
+    }
+  }
   finally{$("busy").style.display="none"}
 }
 
