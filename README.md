@@ -146,8 +146,8 @@ The entire pipeline operates deterministically with **zero reliance on generativ
 
 ```bash
 # Clone the repository
-git clone https://github.com/Praveen-ASML24026/OCR---INvoice-validation-Gofloaters-.git
-cd OCR---INvoice-validation-Gofloaters-
+git clone https://github.com/Praveen-ASML24026/Invoice-Validator-with-GST-Statutory-Compliance-Engine.git
+cd Invoice-Validator-with-GST-Statutory-Compliance-Engine
 
 # Create and activate a virtual environment
 python -m venv .venv
@@ -199,7 +199,7 @@ This project includes automated deployment configurations for both **GitHub Nati
 
 ### 1. GitHub Pages (Web UI Demo)
 The static web dashboard is automatically deployed to **GitHub Pages** via `.github/workflows/pages.yml`.
-- **Live URL**: `https://praveen-asml24026.github.io/OCR---INvoice-validation-Gofloaters-/`
+- **Live URL**: `https://praveen-asml24026.github.io/Invoice-Validator-with-GST-Statutory-Compliance-Engine/`
 - **Features**: Features an integrated **Connection & API Settings** panel allowing you to connect the frontend to any live backend URL (e.g., your local server `http://localhost:8000` or a deployed cloud instance) with optional API Key support.
 - **Enable on GitHub**: Go to **Settings** → **Pages** → Source: **GitHub Actions**.
 
@@ -207,7 +207,7 @@ The static web dashboard is automatically deployed to **GitHub Pages** via `.git
 Every push to `main` triggers `.github/workflows/docker-publish.yml`, building and deploying the production Docker container directly to GitHub's Container Registry.
 - **Pull & Run anywhere instantly from GitHub**:
   ```bash
-  docker run -d -p 8000:8000 ghcr.io/praveen-asml24026/ocr---invoice-validation-gofloaters-:latest
+  docker run -d -p 8000:8000 ghcr.io/praveen-asml24026/invoice-validator-with-gst-statutory-compliance-engine:latest
   ```
 
 ### 3. One-Click Cloud Deployment (Render / Coolify / Railway)
